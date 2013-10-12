@@ -3,6 +3,7 @@
  * Copyright 2013 Nikolai Neff
  * based upon MaxMatrix by Oscar Kin-Chung Au	
  * 
+ * Tested with Arduino 1.0.5 and 1.5.4 on Arduino Uno Rev3
  *
  * This file is part of MaxMatrix2
  * 
@@ -23,7 +24,7 @@
 #include "Arduino.h"
 #include "MaxMatrix2.h"
 
-MaxMatrix2::MaxMatrix2(byte _data, byte _load, byte _clock, byte _numDisplays) 
+MaxMatrix2::MaxMatrix2(byte _data, byte _load, byte _clock, byte _numDisplays)
 {
 	data = _data;
 	load = _load;
@@ -51,7 +52,7 @@ void MaxMatrix2::init(byte scanLimit, byte decodeMode, bool displayTest)
 	
 	for (byte i=0; i<numDisplays; i++) //todo: make this efficient (don't send to each display individually)
 	{
-		sendCommand(i, max7219_reg_scanLimit, scanLimit);      
+		sendCommand(i, max7219_reg_scanLimit, scanLimit);
 		sendCommand(i, max7219_reg_decodeMode, decodeMode);
 		sendCommand(i, max7219_reg_shutdown, 0x01);    //Activate display
 		

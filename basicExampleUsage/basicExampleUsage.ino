@@ -3,6 +3,7 @@
  * Copyright 2013 Nikolai Neff
  * based upon MaxMatrix by Oscar Kin-Chung Au	
  * 
+ * Tested with Arduino 1.0.5 and 1.5.4 on Arduino Uno Rev3
  *
  * This file is part of MaxMatrix2
  * 
@@ -19,6 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MaxMatrix2.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include <MaxMatrix2.h>
 
 int dataIn = 3;
@@ -77,4 +79,3 @@ void loop()
 		
 	delay(1000);
 }
-
