@@ -15,4 +15,5 @@ Todo:
 - [ ] learn Markdown Syntax
 - [ ] Add support for 7-Segment displays as well as LED-Matrices
 - [ ] make code more efficient 
+- [ ] Add more core functionality like Text display (see original Library)
 
