@@ -21,8 +21,8 @@
  * along with MaxMatrix2.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MaxMatrix_H_
-#define _MaxMatrix_H_
+#ifndef _MaxMatrix2_H_
+#define _MaxMatrix2_H_
 
 #include "Arduino.h"
 
@@ -42,7 +42,7 @@
 #define max7219_reg_displayTest 0x0F
 
 
-class MaxMatrix
+class MaxMatrix2
 {
 	private:
 		byte data;
@@ -51,7 +51,7 @@ class MaxMatrix
 		byte numDisplays;
 		
 	public:
-		MaxMatrix(byte _data, byte _load, byte _clock, byte _numDisplays);
+		MaxMatrix2(byte _data, byte _load, byte _clock, byte _numDisplays);
 		
 		void init(byte scanLimit=0x07, byte decodeMode=0x00, bool displayTest=false);
 		void setIntensity(byte display, byte intensity);

@@ -1,10 +1,10 @@
 /* MaxMatrix2
  * Version 0.1 OCT 2013
  * Copyright 2013 Nikolai Neff
- * based upon MaxMatrix by Oscar Kin-Chung Au	
+ * based upon MaxMatrix2 by Oscar Kin-Chung Au	
  * 
  *
- * This file is part of MaxMatrix2
+ * This file is part of MaxMatrix22
  * 
  * MaxMatrix2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@
  */
  
 #include "Arduino.h"
-#include "MaxMatrix.h"
+#include "MaxMatrix2.h"
 
-MaxMatrix::MaxMatrix(byte _data, byte _load, byte _clock, byte _numDisplays) 
+MaxMatrix2::MaxMatrix2(byte _data, byte _load, byte _clock, byte _numDisplays) 
 {
 	data = _data;
 	load = _load;
@@ -31,7 +31,7 @@ MaxMatrix::MaxMatrix(byte _data, byte _load, byte _clock, byte _numDisplays)
 	numDisplays = _numDisplays;
 }
 
-void MaxMatrix::init(byte scanLimit, byte decodeMode, bool displayTest)
+void MaxMatrix2::init(byte scanLimit, byte decodeMode, bool displayTest)
 {
 	pinMode(data,  OUTPUT);
 	pinMode(clock, OUTPUT);
@@ -62,27 +62,27 @@ void MaxMatrix::init(byte scanLimit, byte decodeMode, bool displayTest)
 	}
 }
 
-void MaxMatrix::setIntensity(byte display, byte intensity) //sets the intensity for a specific display
+void MaxMatrix2::setIntensity(byte display, byte intensity) //sets the intensity for a specific display
 {
 	sendCommand(display, max7219_reg_intensity, intensity);
 }
 
-void MaxMatrix::setDecodeMode(byte display, byte decodeMode) //sets the decoding for CODE-B Font for specific digits for a specific display
+void MaxMatrix2::setDecodeMode(byte display, byte decodeMode) //sets the decoding for CODE-B Font for specific digits for a specific display
 {
 	sendCommand(display, max7219_reg_decodeMode, decodeMode);
 }
 
-void MaxMatrix::setShutdown(byte display, byte shutdown) //shutdown or wake up specific display
+void MaxMatrix2::setShutdown(byte display, byte shutdown) //shutdown or wake up specific display
 {
 	sendCommand(display, max7219_reg_shutdown, shutdown);
 }
 
-void MaxMatrix::setTestMode(byte display, byte testMode) //test specific display
+void MaxMatrix2::setTestMode(byte display, byte testMode) //test specific display
 {
 	sendCommand(display, max7219_reg_displayTest, testMode);
 }
 
-void MaxMatrix::clear(byte display)
+void MaxMatrix2::clear(byte display)
 {
 	for (byte i=1; i<=8; i++) //output registers are 1 to 8
 	{
@@ -90,12 +90,12 @@ void MaxMatrix::clear(byte display)
 	}
 }
 
-void MaxMatrix::clearAll()
+void MaxMatrix2::clearAll()
 {
 	//todo: implement
 }
 
-void MaxMatrix::sendCommand(byte display, byte registerAddr, byte value) // sends a command to a specific Display
+void MaxMatrix2::sendCommand(byte display, byte registerAddr, byte value) // sends a command to a specific Display
 {
 	digitalWrite(load, LOW); //indicates data transfer start
 	
@@ -111,7 +111,7 @@ void MaxMatrix::sendCommand(byte display, byte registerAddr, byte value) // send
 	digitalWrite(load, HIGH); //indicates data transfer end
 }
 
-void MaxMatrix::sendArray(byte buffer[8],byte num)
+void MaxMatrix2::sendArray(byte buffer[8],byte num)
 {
 	//todo: Implement me
 }
