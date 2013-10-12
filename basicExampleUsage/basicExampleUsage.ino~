@@ -1,4 +1,4 @@
-#include <MaxMatrix2.h>
+#include <MaxMatrix.h>
 
 int dataIn = 3;
 int load = 4;
