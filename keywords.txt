@@ -1,9 +1,21 @@
+void init(byte scanLimit=0x07, byte decodeMode=0x00, bool displayTest=false);
+		void setIntensity(byte display, byte intensity);
+		void setDecodeMode(byte display, byte decodeMode);
+		void setShutdown(byte display, byte shutdown);
+		void setTestMode(byte display, byte testMode);
+		void clear(byte display);
+		void clearAll();
+		void sendCommand(byte display, byte registerAddr, byte value);
+		void sendArray(byte buffer[8],byte num=0);
 
-MaxMatrix	KEYWORD1
-init		KEYWORD2
-clear		KEYWORD2
-setCommand	KEYWORD2
+
+MaxMatrix		KEYWORD1
+init			KEYWORD2
+clear			KEYWORD2
+clearAll		KEYWORD2
 setIntensity	KEYWORD2
-sendCommand		KEYWORD2
-setIntensity	KEYWORD2
+setDecodeMode	KEYWORD2
+setShutdown		KEYWORD2
+setTestMode		KEYWORD2
+sendCommand		KEYWORD2	
 sendArray		KEYWORD2
