@@ -49,6 +49,9 @@ class MaxMatrix2
 		byte load;
 		byte clock;
 		byte numDisplays;
+		bool transmissionActive;
+		
+		void sendData(byte adress, byte data, bool end);
 		
 	public:
 		MaxMatrix2(byte _data, byte _load, byte _clock, byte _numDisplays);
@@ -61,6 +64,6 @@ class MaxMatrix2
 		void clear(byte display);
 		void clearAll();
 		void sendCommand(byte display, byte registerAddr, byte value);
-		void sendArray(byte buffer[8],byte num=0);
+		void sendArray(byte display, byte buffer[]);
 };
 #endif

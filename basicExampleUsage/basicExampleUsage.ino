@@ -23,59 +23,45 @@
 
 #include <MaxMatrix2.h>
 
-int dataIn = 3;
-int load = 4;
-int clock = 5;
-int maxInUse = 2; //number of adressed displays
+byte dataIn = 3;
+byte load = 4;
+byte clock = 5;
+byte maxInUse = 2; //number of adressed displays
 
 MaxMatrix2 m(dataIn, load, clock, maxInUse);
 
 
 void setup()
 {
-	m.init(); //use default values for now
+	delay(100);
+	Serial.begin(9600);
+	// Serial.println("Init");
+	m.init(0x07, 0x00, false); //scanlimit, decodeMode, displayTest
+	// Serial.println("Intensity1");
+	m.setIntensity(0,0);
+	// Serial.println("Intensity2");
+	m.setIntensity(1,0);
 }
 
 void loop()
 {
-	m.sendCommand(1,1,0b01010101); //arguments: display, address, value; produces a nice on-off pattern on display 1
-	m.sendCommand(1,3,0b01010101);
-	m.sendCommand(1,5,0b01010101);
-	m.sendCommand(1,7,0b01010101);
-	m.sendCommand(1,2,0b10101010);
-	m.sendCommand(1,4,0b10101010);
-	m.sendCommand(1,6,0b10101010);
-	m.sendCommand(1,8,0b10101010);
-	
-	m.sendCommand(2,1,0xFF); //display 2 completely lit
-	m.sendCommand(2,2,0xFF);
-	m.sendCommand(2,3,0xFF);
-	m.sendCommand(2,4,0xFF);
-	m.sendCommand(2,5,0xFF);
-	m.sendCommand(2,6,0xFF);
-	m.sendCommand(2,7,0xFF);
-	m.sendCommand(2,8,0xFF);
+	byte CH_A[] = {B01111110, B00010001, B00010001, B01111110, 0, 0, 0, 0}; // CH_A stores the sprite 'A'
+	byte CH_B[] = {B01111111, B01001001, B01001001, B00110110, 0, 0, 0, 0}; // CH_B stores the sprite 'B'
+	m.sendArray(0, CH_A);
+	m.sendArray(1, CH_B);
 	
 	delay(1000);
 	
-	
-	m.sendCommand(1,1,0b10101010); //alternate pattern on display 1
-	m.sendCommand(1,3,0b10101010);
-	m.sendCommand(1,5,0b10101010);
-	m.sendCommand(1,7,0b10101010);
-	m.sendCommand(1,2,0b01010101);
-	m.sendCommand(1,4,0b01010101);
-	m.sendCommand(1,6,0b01010101);
-	m.sendCommand(1,8,0b01010101);
-	
-	m.sendCommand(2,1,0x00); // display 2 completely off
-	m.sendCommand(2,2,0x00);
-	m.sendCommand(2,3,0x00);
-	m.sendCommand(2,4,0x00);
-	m.sendCommand(2,5,0x00);
-	m.sendCommand(2,6,0x00);
-	m.sendCommand(2,7,0x00);
-	m.sendCommand(2,8,0x00);
+	for (byte i=0; i<8; i++) //Line flashing across the Matrix on Display 0
+	{
+		m.sendCommand(0,i+1,0xFF);
+		if(i>0)
+		{
+			m.sendCommand(0,i,0x00);
+		}
+		delay (30);
+	}		
 		
-	delay(1000);
+	// delay(1000);
+		
 }

@@ -30,6 +30,7 @@ MaxMatrix2::MaxMatrix2(byte _data, byte _load, byte _clock, byte _numDisplays)
 	load = _load;
 	clock = _clock;
 	numDisplays = _numDisplays;
+	transmissionActive = false;
 }
 
 void MaxMatrix2::init(byte scanLimit, byte decodeMode, bool displayTest)
@@ -52,16 +53,47 @@ void MaxMatrix2::init(byte scanLimit, byte decodeMode, bool displayTest)
 	
 	for (byte i=0; i<numDisplays; i++) //todo: make this efficient (don't send to each display individually)
 	{
+		// Serial.println("Scanlimit: ");
 		sendCommand(i, max7219_reg_scanLimit, scanLimit);
+		// Serial.println();
+		// Serial.println("DecodeMode: ");
 		sendCommand(i, max7219_reg_decodeMode, decodeMode);
-		sendCommand(i, max7219_reg_shutdown, 0x01);    //Activate display
+		// Serial.println();
 		
-		if (displayTest == true)
-		{
-			sendCommand(i, max7219_reg_displayTest, 0x01); //displayTest defaults to false, so only send if needed
-		}	
+		// Serial.println("Clear");
+		clear(i);
+		// Serial.println();
+		
+		// Serial.println("Shutdown");
+		sendCommand(i, max7219_reg_shutdown, 0x01);    //Activate display
+		// Serial.println();
+		
+		
+		// Serial.println("TestMode");
+		sendCommand(i, max7219_reg_displayTest, displayTest);
+		// Serial.println();
+			
 	}
 }
+
+void MaxMatrix2::sendData(byte registerAddr, byte value, bool end=false) // sends data serially into the shift registers without terminating the transmission afterwards
+{
+	if (transmissionActive == false)
+	{
+		digitalWrite(load, LOW); //indicates data transfer start
+		transmissionActive = true;
+	} 
+	
+	shiftOut(data, clock, MSBFIRST, registerAddr); //send desired 16 bit of data split up in to parts, as Arduino only supports 8 bit in software-SPI mode
+	shiftOut(data, clock, MSBFIRST, value);	
+	
+	if (end == true)
+	{
+		digitalWrite(load, HIGH); //indicates data transfer end
+		transmissionActive = false;
+	}
+}
+
 
 void MaxMatrix2::setIntensity(byte display, byte intensity) //sets the intensity for a specific display
 {
@@ -96,14 +128,27 @@ void MaxMatrix2::clearAll()
 	//todo: implement
 }
 
+
+
 void MaxMatrix2::sendCommand(byte display, byte registerAddr, byte value) // sends a command to a specific Display
 {
+	//for details on the Addressing of specific registers look in the Max 7219 datasheet
+	
 	digitalWrite(load, LOW); //indicates data transfer start
+	
+	/*cascaded displays act like a shift register. To access a display in the middle of this chain,
+	all other displays have to be ignored by sending specific No-OP instructions. */
+	
+	for (byte i=0; i<(numDisplays-(display+1)); i++)  //send NoOps for leading Displays
+	{
+		shiftOut(data, clock, MSBFIRST, max7219_reg_noop);
+		shiftOut(data, clock, MSBFIRST, 0x00);
+	}
 	
 	shiftOut(data, clock, MSBFIRST, registerAddr); //send desired 16 bit of data split up in to parts, as Arduino only supports 8 bit in software-SPI mode
 	shiftOut(data, clock, MSBFIRST, value);
 	
-	for (byte i=0; i<display-1; i++) //send Display -1 No-Op Commands to address the right display. See Section "No-Op Register" in the Max 7219 datasheet for details
+	for (byte i=0; i<display; i++) //send NoOps for trailing Displays
 	{
 		shiftOut(data, clock, MSBFIRST, max7219_reg_noop);
 		shiftOut(data, clock, MSBFIRST, 0x00);
@@ -112,7 +157,10 @@ void MaxMatrix2::sendCommand(byte display, byte registerAddr, byte value) // sen
 	digitalWrite(load, HIGH); //indicates data transfer end
 }
 
-void MaxMatrix2::sendArray(byte buffer[8],byte num)
+void MaxMatrix2::sendArray(byte display, byte buffer[8])
 {
-	//todo: Implement me
+	for (byte i=0; i<8; i++) 
+	{
+		sendCommand(display, i+1, buffer[i]);
+	}
 }
