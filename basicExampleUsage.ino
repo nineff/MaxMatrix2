@@ -5,7 +5,7 @@ int load = 4;
 int clock = 5;
 int maxInUse = 2; //number of adressed displays
 
-MaxMatrix m(dataIn, load, clock, maxInUse);
+MaxMatrix2 m(dataIn, load, clock, maxInUse);
 
 
 void setup()
