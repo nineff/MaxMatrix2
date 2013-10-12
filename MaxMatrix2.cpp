@@ -1,10 +1,10 @@
 /* MaxMatrix2
  * Version 0.1 OCT 2013
  * Copyright 2013 Nikolai Neff
- * based upon MaxMatrix2 by Oscar Kin-Chung Au	
+ * based upon MaxMatrix by Oscar Kin-Chung Au	
  * 
  *
- * This file is part of MaxMatrix22
+ * This file is part of MaxMatrix2
  * 
  * MaxMatrix2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
