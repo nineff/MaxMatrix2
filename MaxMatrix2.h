@@ -51,7 +51,7 @@ class MaxMatrix2
 		byte numDisplays;
 		bool transmissionActive;
 		
-		void sendData(byte adress, byte data, bool end);
+		void sendData(byte adress, byte data, bool end=false);
 		
 	public:
 		MaxMatrix2(byte _data, byte _load, byte _clock, byte _numDisplays);

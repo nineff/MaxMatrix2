@@ -53,20 +53,52 @@ void MaxMatrix2::init(byte scanLimit, byte decodeMode, bool displayTest)
 	especially if the devices power supply is backed up by a capacitor as it is recommended in the manual.
 	Therefore, the init function always sends values to all status-registers to make sure no settings from the last power-on cycle remain*/
 	
-	for (byte i=0; i<numDisplays; i++) //todo: make this efficient (don't send to each display individually)
+	byte i;
+	
+	clearAll();
+	
+	for (i=0; i<numDisplays; i++)
 	{
-		sendCommand(i, max7219_reg_scanLimit, scanLimit);
-		sendCommand(i, max7219_reg_decodeMode, decodeMode);
-
-		clear(i); //set all outputs to LOW
-		
-		sendCommand(i, max7219_reg_shutdown, 0x01);    //Activate display
-		
-		sendCommand(i, max7219_reg_displayTest, displayTest);
+		if (i!=numDisplays-1)
+		{
+			sendData(max7219_reg_scanLimit, scanLimit);
+		} else {
+			sendData(max7219_reg_scanLimit, scanLimit, true);
+		}
 	}
+	
+	for (i=0; i<numDisplays; i++)
+	{
+		if (i!=numDisplays-1)
+		{
+			sendData(max7219_reg_decodeMode, decodeMode);
+		} else {
+			sendData(max7219_reg_decodeMode, decodeMode, true);
+		}
+	}
+	
+	for (i=0; i<numDisplays; i++)
+	{
+		if (i!=numDisplays-1)
+		{
+			sendData(max7219_reg_displayTest, displayTest);
+		} else {
+			sendData(max7219_reg_displayTest, displayTest, true);
+		}
+	}
+	
+	for (i=0; i<numDisplays; i++)
+	{
+		if (i!=numDisplays-1)
+		{
+			sendData(max7219_reg_shutdown, 0x01);
+		} else {
+			sendData(max7219_reg_shutdown, 0x01, true);
+		}
+	}	
 }
 
-void MaxMatrix2::sendData(byte registerAddr, byte value, bool end=false) // sends data serially into the shift registers without terminating the transmission afterwards
+void MaxMatrix2::sendData(byte registerAddr, byte value, bool end) // sends data serially into the shift registers without terminating the transmission afterwards
 {
 	if (transmissionActive == false)
 	{
@@ -115,7 +147,18 @@ void MaxMatrix2::clear(byte display)
 
 void MaxMatrix2::clearAll()
 {
-	//todo: implement
+	for(byte i=0; i<matrixSize; i++)
+	{
+		for(byte n=0; n<numDisplays; n++)
+		{
+			if(n!=numDisplays-1)
+			{
+				sendData(n+1,0);
+			} else {
+				sendData(n+1,0,true);
+			}
+		}
+	}
 }
 
 

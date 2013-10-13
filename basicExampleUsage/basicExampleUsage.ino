@@ -143,7 +143,7 @@ void setup()
 
 void loop()
 {
-	byte zeichen[matrixSize] = {0, 0, 0, 0, 0, 0, 0, 0};
+	/* byte zeichen[matrixSize] = {0, 0, 0, 0, 0, 0, 0, 0};
 	
 	for (byte a=0; a<95; a++)
 	{
@@ -151,7 +151,7 @@ void loop()
 		zeichen[0] = 0; 	
 		m.sendArray(0, zeichen);	
 		delay(1000);
-	}
+	} */
 	
 	for (byte i=0; i<matrixSize; i++) //Line flashing across the Matrix on Display 0
 	{
@@ -159,7 +159,10 @@ void loop()
 		if(i>0)
 		{
 			m.sendCommand(0,i,0x00);
+		} else {
+			m.sendCommand(0,matrixSize,0x00);
 		}
+		
 		delay (30);
 	}		
 	
