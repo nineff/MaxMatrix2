@@ -65,5 +65,6 @@ class MaxMatrix2
 		void clearAll();
 		void sendCommand(byte display, byte registerAddr, byte value);
 		void sendArray(byte display, byte buffer[matrixSize]);
+		void sendText(char*[] text);
 };
 #endif

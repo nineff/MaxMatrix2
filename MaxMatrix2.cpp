@@ -198,3 +198,7 @@ void MaxMatrix2::sendArray(byte display, byte buffer[matrixSize])
 	}
 }
 
+void MaxMatrix2::sendText(char*[] text)
+{
+    //Todo: implement
+}
