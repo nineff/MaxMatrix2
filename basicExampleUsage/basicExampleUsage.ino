@@ -1,22 +1,22 @@
 /* MaxMatrix2
  * Version 0.1 OCT 2013
  * Copyright 2013 Nikolai Neff
- * based upon MaxMatrix by Oscar Kin-Chung Au	
- * 
+ * based upon MaxMatrix by Oscar Kin-Chung Au
+ *
  * Tested with Arduino 1.0.5 and 1.5.4 on Arduino Uno Rev3
  *
  * This file is part of MaxMatrix2
- * 
+ *
  * MaxMatrix2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MaxMatrix2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with MaxMatrix2.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -144,15 +144,17 @@ void setup()
 void loop()
 {
 	/* byte zeichen[matrixSize] = {0, 0, 0, 0, 0, 0, 0, 0};
-	
+
 	for (byte a=0; a<95; a++)
 	{
 		memcpy_P(zeichen, CH + 6*a, 6);
-		zeichen[0] = 0; 	
-		m.sendArray(0, zeichen);	
+		zeichen[0] = 0;
+		m.sendArray(0, zeichen);
 		delay(1000);
 	} */
-	
+
+
+
 	for (byte i=0; i<matrixSize; i++) //Line flashing across the Matrix on Display 0
 	{
 		m.sendCommand(0,i+1,0xFF);
@@ -162,20 +164,20 @@ void loop()
 		} else {
 			m.sendCommand(0,matrixSize,0x00);
 		}
-		
+
 		delay (30);
-	}		
-	
+	}
+
 	for (byte n=0; n<matrixSize; n++)
 	{
 		for (byte i=0; i<matrixSize; i++)
 		{
-			m.sendCommand(1,i+1,1<<n);			
+			m.sendCommand(1,i+1,1<<n);
 		}
 		delay (30);
-	}	
-	
-	
+	}
+
+
 	delay(1000);
-		
+
 }
