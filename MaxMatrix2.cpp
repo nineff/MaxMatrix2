@@ -40,6 +40,7 @@ void MaxMatrix2::init(byte scanLimit, byte decodeMode, bool displayTest)
 	pinMode(load,  OUTPUT);
 	
 	/* From the MAX7219/MAX7221 Datasheet:
+	
 	On initial power-up, all control registers are reset, the
 	display is blanked, and the MAX7219/MAX7221 enter
 	shutdown mode. Program the display driver prior to
@@ -47,32 +48,21 @@ void MaxMatrix2::init(byte scanLimit, byte decodeMode, bool displayTest)
 	digit, it will not decode data in the data registers, and
 	the intensity register will be set to its minimum value.
 	*/
-	
-	
-	//digitalWrite(clock, HIGH); digitalWrite(load, HIGH);
+
+	/*It might take a while for these defaults to kick in,
+	especially if the devices power supply is backed up by a capacitor as it is recommended in the manual.
+	Therefore, the init function always sends values to all status-registers to make sure no settings from the last power-on cycle remain*/
 	
 	for (byte i=0; i<numDisplays; i++) //todo: make this efficient (don't send to each display individually)
 	{
-		// Serial.println("Scanlimit: ");
 		sendCommand(i, max7219_reg_scanLimit, scanLimit);
-		// Serial.println();
-		// Serial.println("DecodeMode: ");
 		sendCommand(i, max7219_reg_decodeMode, decodeMode);
-		// Serial.println();
+
+		clear(i); //set all outputs to LOW
 		
-		// Serial.println("Clear");
-		clear(i);
-		// Serial.println();
-		
-		// Serial.println("Shutdown");
 		sendCommand(i, max7219_reg_shutdown, 0x01);    //Activate display
-		// Serial.println();
 		
-		
-		// Serial.println("TestMode");
 		sendCommand(i, max7219_reg_displayTest, displayTest);
-		// Serial.println();
-			
 	}
 }
 
@@ -157,9 +147,9 @@ void MaxMatrix2::sendCommand(byte display, byte registerAddr, byte value) // sen
 	digitalWrite(load, HIGH); //indicates data transfer end
 }
 
-void MaxMatrix2::sendArray(byte display, byte buffer[8])
+void MaxMatrix2::sendArray(byte display, byte buffer[matrixSize])
 {
-	for (byte i=0; i<8; i++) 
+	for (byte i=0; i<matrixSize; i++) 
 	{
 		sendCommand(display, i+1, buffer[i]);
 	}

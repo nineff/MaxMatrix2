@@ -40,7 +40,7 @@
 #define max7219_reg_scanLimit   0x0b
 #define max7219_reg_shutdown    0x0c
 #define max7219_reg_displayTest 0x0F
-
+#define matrixSize				8
 
 class MaxMatrix2
 {
@@ -64,6 +64,6 @@ class MaxMatrix2
 		void clear(byte display);
 		void clearAll();
 		void sendCommand(byte display, byte registerAddr, byte value);
-		void sendArray(byte display, byte buffer[]);
+		void sendArray(byte display, byte buffer[matrixSize]);
 };
 #endif
