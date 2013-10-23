@@ -56,7 +56,7 @@ class MaxMatrix2
 	public:
 		MaxMatrix2(byte _data, byte _load, byte _clock, byte _numDisplays);
 
-		void init(byte scanLimit=0x07, byte decodeMode=0x00, bool displayTest=false);
+		void init(byte scanLimit=0x07, byte decodeMode=0x00, byte intensity=0x00, bool displayTest=false);
 		void setIntensity(byte display, byte intensity);
 		void setDecodeMode(byte display, byte decodeMode);
 		void setShutdown(byte display, byte shutdown);
@@ -65,6 +65,6 @@ class MaxMatrix2
 		void clearAll();
 		void sendCommand(byte display, byte registerAddr, byte value);
 		void sendArray(byte display, byte buffer[matrixSize]);
-		void sendText(char*[] text);
+		void sendASCIIText(String text);
 };
 #endif

@@ -33,7 +33,7 @@ MaxMatrix2::MaxMatrix2(byte _data, byte _load, byte _clock, byte _numDisplays)
 	transmissionActive = false;
 }
 
-void MaxMatrix2::init(byte scanLimit, byte decodeMode, bool displayTest)
+void MaxMatrix2::init(byte scanLimit, byte decodeMode, byte intensity, bool displayTest)
 {
 	pinMode(data,  OUTPUT);
 	pinMode(clock, OUTPUT);
@@ -54,8 +54,6 @@ void MaxMatrix2::init(byte scanLimit, byte decodeMode, bool displayTest)
 	Therefore, the init function always sends values to all status-registers to make sure no settings from the last power-on cycle remain*/
 
 	byte i;
-
-	clearAll();
 
 	for (i=0; i<numDisplays; i++)
 	{
@@ -94,6 +92,16 @@ void MaxMatrix2::init(byte scanLimit, byte decodeMode, bool displayTest)
 			sendData(max7219_reg_shutdown, 0x01);
 		} else {
 			sendData(max7219_reg_shutdown, 0x01, true);
+		}
+	}
+	
+	for (i=0; i<numDisplays; i++)
+	{
+		if (i!=numDisplays-1)
+		{
+			sendData(max7219_reg_intensity, intensity);
+		} else {
+			sendData(max7219_reg_intensity, intensity, true);
 		}
 	}
 }
@@ -153,9 +161,9 @@ void MaxMatrix2::clearAll()
 		{
 			if(n!=numDisplays-1)
 			{
-				sendData(n+1,0);
+				sendData(i+1,0);
 			} else {
-				sendData(n+1,0,true);
+				sendData(i+1,0,true);
 			}
 		}
 	}
@@ -198,7 +206,22 @@ void MaxMatrix2::sendArray(byte display, byte buffer[matrixSize])
 	}
 }
 
-void MaxMatrix2::sendText(char*[] text)
+void MaxMatrix2::sendASCIIText(String text)
 {
     //Todo: implement
+//    int col = 0;
+//    while (text != 0)
+//    {
+//        if (text < 32) //ignore control caracters
+//        {
+//            continue;
+//        }
+//        char c = *s - 32;
+//
+//        memcpy_P(buffer, CH + 7*c, 7);
+//        m.writeSprite(col, 0, buffer);
+//        m.setColumn(col + buffer[0], 0);
+//        col += buffer[0] + 1;
+//        s++;
+//    }
 }

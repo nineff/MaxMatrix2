@@ -22,7 +22,7 @@
  */
 
 #include <MaxMatrix2.h>
-#include <avr/pgmspace.h>
+/* #include <avr/pgmspace.h>
 
 const prog_uchar CH[] PROGMEM = {
 3, B00000000, B00000000, B00000000, B00000000, B00000000, // space
@@ -120,25 +120,21 @@ const prog_uchar CH[] PROGMEM = {
 1, B01111111, B00000000, B00000000, B00000000, B00000000, // |
 3, B01000001, B00110110, B00001000, B00000000, B00000000, // }
 4, B00001000, B00000100, B00001000, B00000100, B00000000, // ~
-};
+}; */
 
 
 
 const byte dataIn = 3;
 const byte load = 4;
 const byte clock = 5;
-const byte maxInUse = 2; //number of adressed displays
+const byte maxInUse = 8; //number of adressed displays
 
 MaxMatrix2 m(dataIn, load, clock, maxInUse);
 
 
 void setup()
 {
-	delay(100);
-	Serial.begin(9600);
-	m.init(0x07, 0x00, false); //scanlimit, decodeMode, displayTest
-	m.setIntensity(0,0);
-	m.setIntensity(1,0);
+	m.init(0x07, 0x00, 0x00, false); //scanlimit, decodeMode, intensity, displayTest
 }
 
 void loop()
@@ -154,30 +150,32 @@ void loop()
 	} */
 
 
-
-	for (byte i=0; i<matrixSize; i++) //Line flashing across the Matrix on Display 0
+	for (byte display=0; display<8; display++)
 	{
-		m.sendCommand(0,i+1,0xFF);
-		if(i>0)
+		for (byte i=0; i<matrixSize; i++) //Line flashing across the Matrix on Display 0
 		{
-			m.sendCommand(0,i,0x00);
-		} else {
-			m.sendCommand(0,matrixSize,0x00);
+			m.sendCommand(display,i+1,0xFF);
+			if(i>0)
+			{
+				m.sendCommand(display,i,0x00);
+			} else {
+				m.sendCommand(display,matrixSize,0x00);
+			}
+
+			delay (100);
 		}
 
-		delay (30);
-	}
-
-	for (byte n=0; n<matrixSize; n++)
-	{
-		for (byte i=0; i<matrixSize; i++)
+		for (byte n=0; n<matrixSize; n++)
 		{
-			m.sendCommand(1,i+1,1<<n);
+			for (byte i=0; i<matrixSize; i++)
+			{
+				m.sendCommand(display,i+1,1<<n);
+			}
+			delay (100);
 		}
-		delay (30);
 	}
-
-
+	delay(1000);
+	m.clearAll();
 	delay(1000);
 
 }

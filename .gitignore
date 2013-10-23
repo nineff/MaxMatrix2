@@ -6,6 +6,7 @@
 *.exe
 *.o
 *.so
+*.a
 
 # Packages #
 ############
@@ -40,3 +41,4 @@ Thumbs.db
 ################
 *.cbp
 *.layout
+*.depend
